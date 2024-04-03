@@ -24,11 +24,14 @@ for url_news in links:
     dict_ = {}
     response = session.get(url=url_news, headers=header)
     dom = html.fromstring(response.text)
-    title = dom.xpath("//h1[@data-qa='Title']/text()")[0]
-    short_story = dom.xpath("//header//p/text()")[0]
-    dict_['title'] = title
-    dict_['short_story'] = short_story
-    news_list.append(dict_)
+    try:
+        dict_['title'] = dom.xpath("//h1[@data-qa='Title']/text()")[0]
+        dict_['short_story'] = dom.xpath("//header//p/text()")[0]
+    except:
+        print(f'c этой новостью что-то не так {url_news}')
+
+    if dict_.get('title', False) and  dict_.get('short_story', False):
+        news_list.append(dict_)
     time.sleep(5)
 
 #обработка ошибок не потребовалась
